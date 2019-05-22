@@ -1,37 +1,24 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-
+const mysql = require('mysql');
 const app = express();
+require('dotenv').config()
+var con = mysql.createConnection({
+  host: process.env.DATABASE_HOST,
+  port: process.env.MYSQL_PORT,
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DATABASE
+});
 
-app.set('view engine', 'ejs');
-
-app.use(bodyParser.urlencoded({ extended: false }));
-
-// Connect to MongoDB
-mongoose
-  .connect(
-    'mongodb://mongo:27017/docker-node-mongo',
-    { useNewUrlParser: true }
-  )
-  .then(() => console.log('MongoDB Connected'))
-  .catch(err => console.log(err));
-
-const Item = require('./models/Item');
-
+con.connect(function (err) {
+  if (err) throw err;
+  console.log("Connected!");
+});
 app.get('/', (req, res) => {
-  Item.find()
-    .then(items => res.render('index', { items }))
-    .catch(err => res.status(404).json({ msg: 'No items found' }));
+  res.send("it works")
 });
 
-app.post('/item/add', (req, res) => {
-  const newItem = new Item({
-    name: req.body.name
-  });
 
-  newItem.save().then(item => res.redirect('/'));
-});
 
 const port = 3000;
 
