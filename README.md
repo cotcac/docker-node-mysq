@@ -1,6 +1,6 @@
-# Docker Node MongoDB Example
+# Docker Node Mysql Example
 
-> Simple example of a dockerized Node/Mongo app
+> Simple example of a dockerized Node/Mysql app
 
 ## Quick Start
 
